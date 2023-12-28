@@ -1,0 +1,260 @@
+/*
+import (
+	"crypto/rand"
+	"fmt"
+	"math"
+	"math/big"
+	"rutasMap/v2/models"
+	"rutasMap/v2/services"
+	"rutasMap/v2/util"
+	"github.com/shirou/gopsutil/mem"
+	"time"
+	"github.com/shirou/gopsutil/cpu"
+)
+
+const (
+	inf = math.MaxFloat64
+)	
+
+func main() {
+	fmt.Println("inicinado...")
+	rutas, err := services.GetFindRoute()
+	//arrayGraph := []float64{}
+	if err != nil {
+		fmt.Println("error ")
+		return
+	}
+
+	pointOrigin := models.Point{Lat: -13.156737137460935, Lng: -74.22039270401002}
+	pointDestiny := models.Point{Lat: -13.153143269032823, Lng: -74.22039270401002}
+
+	i := true
+	for _, v := range rutas {
+		if len(v.Routes) > 0 && i {
+			i = false
+			rows, cols := len(v.Routes)+2, len(v.Routes)+2
+			matrix := make([][]float64, rows)
+			for i := range matrix {
+				matrix[i] = make([]float64, cols)
+			}
+			for _, p := range v.Routes {
+				matrix[0][p.Index] = util.DistanceTwoPoints(pointOrigin, p)
+				matrix[p.Index][p.IndexNext] = p.Distance
+				matrix[p.Index][len(v.Routes)+1] = util.DistanceTwoPoints(p, pointDestiny)
+
+			}
+			//cpu
+			//ram
+			memoryBefore, _ := mem.VirtualMemory()
+
+			// time
+			startTime := time.Now()
+			//
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			antmanColony(matrix)
+			
+
+
+			// time
+			endTime := time.Now()
+			executionTime := endTime.Sub(startTime)
+			
+			// ram
+			memoryAfter, _ := mem.VirtualMemory()
+			memoryUsed := memoryAfter.Used - memoryBefore.Used
+			totalMemory := float64(memoryBefore.Total)
+			memoryUsagePercentage := (float64(memoryUsed) / totalMemory) * 100.0
+			
+			// cpu 
+			cpuPercentAfter, _ := cpu.Percent(time.Second, false)
+
+			totalCPUTime := float64(0)
+			for _, percent := range cpuPercentAfter {
+				totalCPUTime += percent
+			}
+
+			cpuTimeUsed := totalCPUTime * (float64(time.Second) / 1000.0)
+			cpuUsagePercentage := (cpuTimeUsed / float64(time.Second)) * 100.0
+
+			
+    		fmt.Printf("Tiempo de ejecución: %v\n", executionTime)
+			fmt.Printf("Uso de memoria: %.2f%%\n", memoryUsagePercentage)
+			fmt.Printf("Uso de CPU: %.2f%%\n", cpuUsagePercentage)
+		}
+	}
+	fmt.Println("terminanndo...")
+	
+
+
+	/*r := setupRouter()
+	env := os.Getenv("GIN_MODE")
+	if env == "release" {
+		ginLambda = ginadapter.New(r)
+
+		lambda.Start(Handler)
+	} else {
+		_ = r.Run("0.0.0.0:8Println()
+	}
+
+}
+*/
+func antmanColony(matrix [][]float64) {
+	//f_0 := 0.1
+	kAntman := 100
+	size := len(matrix) 
+	t_0 := 0.009
+	a := 1
+	b := 1
+
+	matrixF := make([][]float64, len(matrix))
+
+	for i := range matrix {
+		matrixF[i] = make([]float64, len(matrix))
+	}
+
+	stepAntAll := [][][]float64{}
+
+	for i := 0; i < kAntman; i++ {
+		node := 0
+		distanceTotal := 0.0
+		stepAntCurrent := [][]float64{}
+		for {
+			
+			if node == (size - 1) {
+				node = 0
+				break
+			}
+
+			nodeIndex := [][]float64{}
+
+			sumT_iN_i := 0.0
+		
+			for index, v := range matrix[node] {
+				
+				if v > 0 {
+					t_iN_i := math.Pow(t_0, float64(a)) * math.Pow(1/v, float64(b))
+
+					sumT_iN_i = sumT_iN_i + t_iN_i
+					nodeIndex = append(nodeIndex, []float64{float64(index), t_iN_i, v})
+					
+				}
+			}
+
+			randomNumber, _ := rand.Int(rand.Reader, big.NewInt(1000000))
+			randomFloat := float64(randomNumber.Int64()) / 1000000.0
+		
+			accProb := 0.0
+
+			for _, r := range nodeIndex {
+				accProb = accProb + r[1]/sumT_iN_i
+				
+			
+				if accProb >= randomFloat {
+					distanceTotal = distanceTotal + r[2]
+					stepAntCurrent = append(stepAntCurrent, []float64{float64(node), r[0], distanceTotal})
+					node = int(r[0])
+					break
+				}
+			}
+
+		}
+
+		stepAntAll = append(stepAntAll, stepAntCurrent)
+		/// 300m , 400ms , 
+
+	}
+
+	for _, ant := range stepAntAll {
+		distanceTotal := ant[len(ant) -1 ][2]
+		
+		for _, antStep := range ant {
+			if (matrixF[int(antStep[0])][int(antStep[1])] == 0){
+				matrixF[int(antStep[0])][int(antStep[1])] = t_0
+			}
+			matrixF[int(antStep[0])][int(antStep[1])] = matrixF[int(antStep[0])][int(antStep[1])] + 1/distanceTotal
+			
+		}
+	}
+}
+
+
+func dijkstra(graph [][]float64, start int, end int) ([]float64, []int) {
+	n := len(graph)
+	dist := make([]float64, n)
+	visited := make([]bool, n)
+	prev := make([]int, n)
+
+	for i := 0; i < n; i++ {
+		dist[i] = inf
+		visited[i] = false
+		prev[i] = -1
+	}
+
+	dist[start] = 0
+
+	for count := 0; count < n-1; count++ {
+		u := minDistance(dist, visited)
+		visited[u] = true
+
+		for v := 0; v < n; v++ {
+			if !visited[v] && graph[u][v] != 0 && dist[u]+graph[u][v] < dist[v] {
+				dist[v] = dist[u] + graph[u][v]
+				prev[v] = u
+			}
+		}
+	}
+
+	path := make([]int, 0)
+	curr := end
+	for curr != -1 {
+		path = append([]int{curr}, path...)
+		curr = prev[curr]
+	}
+
+	return dist, path
+}
+
+func minDistance(dist []float64, visited []bool) int {
+	min := inf
+	minIndex := -1
+	for v := 0; v < len(dist); v++ {
+		if !visited[v] && dist[v] <= min {
+			min = dist[v]
+			minIndex = v
+		}
+	}
+	return minIndex
+}
+
+func genetic(matrix [][]float64){
+
+}
+
+
+/*
+func setupRouter() *gin.Engine {
+	r := gin.Default()
+	routers.SetRouter(r)
+	return r
+}
+
+func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	return ginLambda.ProxyWithContext(ctx, request)
+}
+*/
