@@ -25,6 +25,10 @@ func SetRouter(r *gin.Engine) {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
+
+	r.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "Funciona correctamente")
+	})
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
 	})
