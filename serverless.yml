@@ -8,10 +8,6 @@ provider:
 functions:
   api:
     handler: bin/main
-    events:
-      - http:
-          path: /ping
-          method: get
 package:
   patterns:
     - '!*/**'
