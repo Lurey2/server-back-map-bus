@@ -20,6 +20,7 @@ func main() {
 	ginLambda = ginadapter.New(r)
 
 	lambda.Start(Handler)
+
 }
 
 func setupRouter() *gin.Engine {
