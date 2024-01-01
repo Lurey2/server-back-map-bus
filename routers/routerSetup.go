@@ -8,22 +8,18 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 )
 
 var pathOrigin = "/api/"
 
 func SetRouter(r *gin.Engine) {
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{viper.GetString("cors.origin")},
+		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"PUT", "PATCH", "DELETE", "POST", "GET", "OPTIONS"},
 		AllowHeaders:     []string{"Authorization", "Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		AllowOriginFunc: func(origin string) bool {
-			return origin == "*"
-		},
-		MaxAge: 12 * time.Hour,
+		MaxAge:           12 * time.Hour,
 	}))
 
 	r.GET("/", func(c *gin.Context) {
