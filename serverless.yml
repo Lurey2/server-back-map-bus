@@ -12,21 +12,11 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-            methods:
-              - POST
+          cors: true
       - http:
           path: /{proxy+}
           method: OPTIONS
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-            methods:
-              - POST
+          cors: true
 package:
   patterns:
     - '!*/**'
