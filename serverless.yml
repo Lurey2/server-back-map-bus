@@ -8,6 +8,10 @@ provider:
 functions:
   api:
     handler: bin/main
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
 package:
   patterns:
     - '!*/**'
