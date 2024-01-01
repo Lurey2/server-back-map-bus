@@ -14,7 +14,7 @@ var pathOrigin = "/api/"
 
 func SetRouter(r *gin.Engine) {
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://192.168.1.5:4200"},
+		AllowOrigins:     []string{"http://ec2-54-196-14-202.compute-1.amazonaws.com/"},
 		AllowMethods:     []string{"PUT", "PATCH", "DELETE", "POST", "GET", "OPTIONS"},
 		AllowHeaders:     []string{"Authorization", "Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
