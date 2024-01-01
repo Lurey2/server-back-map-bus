@@ -12,6 +12,13 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
+          cors:
+            origin: '*'
+      - http:
+          path: /{proxy+}
+          method: OPTIONS
+          cors:
+            origin: '*'
 package:
   patterns:
     - '!*/**'
