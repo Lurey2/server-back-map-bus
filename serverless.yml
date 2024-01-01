@@ -12,11 +12,21 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
-          cors: true
+          cors:
+            origin: 'http://ec2-54-196-14-202.compute-1.amazonaws.com'
+            headers:
+              - Content-Type
+            methods:
+              - POST
       - http:
           path: /{proxy+}
           method: OPTIONS
-          cors: true
+          cors:
+            origin: 'http://ec2-54-196-14-202.compute-1.amazonaws.com'
+            headers:
+              - Content-Type
+            methods:
+              - POST
 package:
   patterns:
     - '!*/**'
