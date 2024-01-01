@@ -16,8 +16,12 @@ functions:
             origin: 'http://ec2-54-196-14-202.compute-1.amazonaws.com'
             headers:
               - Content-Type
-            methods:
-              - POST
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: false
       - http:
           path: /{proxy+}
           method: OPTIONS
@@ -25,8 +29,9 @@ functions:
             origin: 'http://ec2-54-196-14-202.compute-1.amazonaws.com'
             headers:
               - Content-Type
+            allowCredentials: false
             methods:
-              - POST
+              - ANY
 package:
   patterns:
     - '!*/**'
