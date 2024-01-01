@@ -16,7 +16,7 @@ var pathOrigin = "/api/"
 func SetRouter(r *gin.Engine) {
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{viper.GetString("cors.origin")},
-		AllowMethods:     []string{"PUT", "PATCH", "DELETE", "POST", "GET"},
+		AllowMethods:     []string{"PUT", "PATCH", "DELETE", "POST", "GET", "OPTIONS"},
 		AllowHeaders:     []string{"Authorization", "Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
