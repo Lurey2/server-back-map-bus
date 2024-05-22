@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"os"
 	"rutasMap/v2/conf"
 	"rutasMap/v2/routers"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 var ginLambda *ginadapter.GinLambda
@@ -16,9 +18,14 @@ var ginLambda *ginadapter.GinLambda
 func main() {
 	conf.InitializeConfig()
 	r := setupRouter()
-	ginLambda = ginadapter.New(r)
+	env := os.Getenv("GIN_MODE")
+	if env == "release" {
+		ginLambda = ginadapter.New(r)
 
-	lambda.Start(Handler)
+		lambda.Start(Handler)
+	} else {
+		_ = r.Run("0.0.0.0:" + viper.GetString("port"))
+	}
 
 }
 

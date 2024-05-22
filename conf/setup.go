@@ -10,15 +10,15 @@ import (
 	"gorm.io/gorm"
 )
 
-const DB_USERNAME = "lur"
-const DB_PASSWORD = "wewDe2323_412323"
-const DB_NAME = "busdatabase"
-const DB_HOST = "database-1.ctubvgkofn0e.us-east-1.rds.amazonaws.com"
+//const DB_USERNAME = "lur"
+//const DB_PASSWORD = "wewDe2323_412323"
+//const DB_NAME = "busdatabase"
+//const DB_HOST = "database-1.ctubvgkofn0e.us-east-1.rds.amazonaws.com"
 
-//const DB_USERNAME = "root"
-//const DB_PASSWORD = "root"
-//const DB_NAME = "testp"
-//const DB_HOST = "localhost"
+const DB_USERNAME = "root"
+const DB_PASSWORD = "root"
+const DB_NAME = "testp"
+const DB_HOST = "localhost"
 
 const DB_PORT = "3306"
 

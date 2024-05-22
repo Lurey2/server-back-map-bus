@@ -105,8 +105,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("SESSIONID", token, 15552000, "/", "http://ec2-54-196-14-202.compute-1.amazonaws.com", true, true)
+	c.SetCookie("SESSIONID", token, 15552000, "/", "http://localhost:4200", true, true)
 	c.JSON(http.StatusOK, conf.Response{
 		Status: conf.Succes,
 		Data:   models.User{Email: user.Email, Username: user.Username, Rol: user.Rol, Confirm: user.Confirm},
@@ -192,8 +191,7 @@ func LoginGoogleInSignUp(c *gin.Context) {
 		})
 		return
 	}
-	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("SESSIONID", tokenEncript, 15552000, "/", "http://ec2-54-196-14-202.compute-1.amazonaws.com", true, true)
+	c.SetCookie("SESSIONID", tokenEncript, 15552000, "/", "http://localhost:4200", true, true)
 
 	c.JSON(http.StatusOK, conf.Response{
 		Status: conf.Succes,
@@ -216,8 +214,7 @@ func LogoutUser(c *gin.Context) {
 		})
 	}
 
-	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("SESSIONID", "", -1, "/", "http://ec2-54-196-14-202.compute-1.amazonaws.com", true, true)
+	c.SetCookie("SESSIONID", "", -1, "/", "http://localhost:4200", true, true)
 
 	c.JSON(http.StatusOK, conf.Response{
 		Status: conf.Succes,
